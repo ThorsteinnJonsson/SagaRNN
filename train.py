@@ -4,6 +4,7 @@ from torch.autograd import Variable
 import argparse
 import os
 import string
+import time
 from torch.utils.data import DataLoader
 
 
@@ -11,16 +12,26 @@ from model import *
 from helpers import *
   
   
+def save_model(model):
+  model_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model')
+  if not os.path.exists(model_directory):
+    os.mkdir(model_directory)
+  model_filename =time.strftime("%Y%m%d-%H%M%S") + '_saga_model.pt'
+  model_filename = os.path.join(model_directory, model_filename) 
+  torch.save(model, model_filename)
+  return model_filename
+
 
 def train():
   dataset_filename = "data/shakespear.txt"
   chunk_len = 200
   batch_size = 7
-  num_epochs = 5
+  num_epochs = 3
   
   # Prepare data and make data loader
   text, chars = read_file(dataset_filename)
-  x_train, y_train = get_dataset(text, chars)
+  codec = Codec(chars)
+  x_train, y_train = get_dataset(text, codec)
   data_loader = SagaDataLoader(x_train, 
                                y_train, 
                                chunk_len, 
@@ -36,17 +47,12 @@ def train():
                        output_size,
                        num_layers)
   
-
-
-
-
   learning_rate = 0.01
   optimizer = torch.optim.Adam(saga_model.parameters(), lr=learning_rate)
 
   criterion = nn.CrossEntropyLoss()
 
   saga_model.cpu(); # don't have a GPU :(
-  
   
   print("Training for {} epochs...".format(num_epochs))
 
@@ -71,7 +77,12 @@ def train():
     loss.backward()
     optimizer.step()
 
-  # TODO save model
+  # Save model after training
+  model_filename = save_model(saga_model)
+  print("Saved model as {}".format(model_filename))
+
+
+
 
 
 

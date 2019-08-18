@@ -18,7 +18,6 @@ if __name__ == "__main__":
   argparser.add_argument('mode', type=str, help="Specify as \"train\" or \"generate\"")
   args = argparser.parse_args()
 
-  print("RNN")
   if args.mode == "train":
     do_train()
   elif args.mode == "generate":
