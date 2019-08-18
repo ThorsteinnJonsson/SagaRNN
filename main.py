@@ -5,12 +5,19 @@ import string
 import torch
 
 from train import *
+from generate import *
 
 def do_train():
+  print("Training...")
+  print ("=====================")
   train()
+  print ("=====================")
 
 def do_generate():
   print ("Generating...")
+  print ("=====================")
+  generate_sample()
+  print ("=====================")
 
 if __name__ == "__main__":
 
