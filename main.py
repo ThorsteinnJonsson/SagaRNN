@@ -1,10 +1,15 @@
 import os
 import argparse
+import string
 
-def Train():
-  print("Training...")
+import torch
 
-def Generate():
+from train import *
+
+def do_train():
+  train()
+
+def do_generate():
   print ("Generating...")
 
 if __name__ == "__main__":
@@ -15,8 +20,8 @@ if __name__ == "__main__":
 
   print("RNN")
   if args.mode == "train":
-    Train()
+    do_train()
   elif args.mode == "generate":
-    Generate()
+    do_generate()
   else:
     print ("Mode \"" + args.mode + "\" not recognized. Please specify it as either \"train\" or \"generate\"")
