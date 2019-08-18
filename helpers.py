@@ -11,18 +11,29 @@ def read_file(filename):
     with open(filename, 'r') as fid:
       text = fid.read()
     chars = sorted(list(set(text)))
-
     return text, chars
 
-def get_dataset(input_text, chars):
-  # Encode chars as integers
-  char_to_index = {}
-  index_to_char = {}
-  for i, c in enumerate(chars):
-    char_to_index[c] = i
-    index_to_char[i] = c
+class Codec():
+  def __init__(self, chars):
+    char_to_index = {}
+    index_to_char = {}
+    for i, c in enumerate(chars):
+      char_to_index[c] = i
+      index_to_char[i] = c
+    self.char_to_index = char_to_index
+    self.index_to_char = index_to_char
 
-  encoded_text = np.array([char_to_index[char] for char in input_text])
+  def encode(self, text):
+    return np.array([self.char_to_index[char] for char in text])
+
+  def decode(self, encoded_text):
+    return ''.join([self.index_to_char[index] for index in encoded_text])
+
+
+
+def get_dataset(input_text, codec):
+  # Encode chars as integers
+  encoded_text = codec.encode(input_text)
 
   x_train = torch.from_numpy(encoded_text[0:500])
   y_train = torch.from_numpy(encoded_text[1:501])
