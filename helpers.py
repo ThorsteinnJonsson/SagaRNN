@@ -35,10 +35,8 @@ def get_dataset(input_text, codec):
   # Encode chars as integers
   encoded_text = codec.encode(input_text)
 
-  x_train = torch.from_numpy(encoded_text[0:500])
-  y_train = torch.from_numpy(encoded_text[1:501])
-  # x_train = torch.from_numpy(encoded_text[:-1]) # TODO re-enable. too slow for testing
-  # y_train = torch.from_numpy(encoded_text[1:])
+  x_train = torch.from_numpy(encoded_text[:-1])
+  y_train = torch.from_numpy(encoded_text[1:])
   x_train = x_train.type(torch.LongTensor).unsqueeze(0)
   y_train = y_train.type(torch.LongTensor).unsqueeze(0)
 

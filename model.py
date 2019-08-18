@@ -2,7 +2,8 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') # TODO refactor
+# TODO Refactor when I get a GPU
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  
 
 class SagaRNN(nn.Module):
   def __init__(self, input_size, hidden_size, output_size, num_layers):

@@ -9,15 +9,21 @@ from generate import *
 
 def do_train():
   print("Training...")
-  print ("=====================")
-  train()
-  print ("=====================")
+  print("================================================")
+  #TODO make optional input param
+  dataset_filename = "data/shakespear.txt"
+  train(dataset_filename)
+  print("================================================")
 
 def do_generate():
-  print ("Generating...")
-  print ("=====================")
-  generate_sample()
-  print ("=====================")
+  print("Generating...")
+  print("================================================")
+  #TODO make optional input param
+  seed = "A" 
+  prediction_length = 100 
+  dataset_filename = "data/shakespear.txt"
+  generate_sample(seed, prediction_length, dataset_filename)
+  print("================================================")
 
 if __name__ == "__main__":
 
