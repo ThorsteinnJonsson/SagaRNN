@@ -4,12 +4,6 @@ import os
 from helpers import *
 from model import *
 
-def load_model(model_filename):
-  model_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model')
-  model_filename = os.path.join(model_directory, model_filename)
-  model = torch.load(model_filename)
-  return model
-
 def generate(model, codec, seed, prediction_length, temperature=0.8):
   # Initialize memory for prediction
   prediction = ['0']*(len(seed) + prediction_length)

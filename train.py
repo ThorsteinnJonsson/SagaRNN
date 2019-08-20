@@ -12,22 +12,13 @@ from model import *
 from helpers import *
   
   
-def save_model(model):
-  model_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model')
-  if not os.path.exists(model_directory):
-    os.mkdir(model_directory)
-  timestamped_model_filename = os.path.join(model_directory, time.strftime("%Y%m%d-%H%M%S") + '_saga_model.pt')
-  model_filename = os.path.join(model_directory, 'saga_model.pt')
-  torch.save(model, timestamped_model_filename)
-  torch.save(model, model_filename)
-  return model_filename, timestamped_model_filename
 
 
-def train(dataset_filename):
+def train(dataset_filename, num_epochs):
   # TODO make input param
   chunk_len = 200
   batch_size = 100
-  num_epochs = 100
+  learning_rate = 0.01
   
   # Prepare data and make data loader
   text, chars = read_file(dataset_filename)
@@ -48,7 +39,6 @@ def train(dataset_filename):
                        output_size,
                        num_layers)
   
-  learning_rate = 0.01
   optimizer = torch.optim.Adam(saga_model.parameters(), lr=learning_rate)
   criterion = nn.CrossEntropyLoss()
 

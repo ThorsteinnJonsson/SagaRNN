@@ -2,8 +2,27 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
+import os
+
 # TODO Refactor when I get a GPU
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  
+
+def save_model(model):
+  model_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model')
+  if not os.path.exists(model_directory):
+    os.mkdir(model_directory)
+  timestamped_model_filename = os.path.join(model_directory, time.strftime("%Y%m%d-%H%M%S") + '_saga_model.pt')
+  model_filename = os.path.join(model_directory, 'saga_model.pt')
+  torch.save(model, timestamped_model_filename)
+  torch.save(model, model_filename)
+  return model_filename, timestamped_model_filename
+
+
+def load_model(model_filename):
+  model_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model')
+  model_filename = os.path.join(model_directory, model_filename)
+  model = torch.load(model_filename)
+  return model
 
 class SagaRNN(nn.Module):
   def __init__(self, input_size, hidden_size, output_size, num_layers):

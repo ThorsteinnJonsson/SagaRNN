@@ -11,8 +11,9 @@ def do_train():
   print("Training...")
   print("================================================")
   #TODO make optional input param
-  dataset_filename = "data/shakespear.txt"
-  train(dataset_filename)
+  dataset_filename = "data/icelandic_sagas.txt"
+  num_epochs = 250
+  train(dataset_filename, num_epochs)
   print("================================================")
 
 def do_generate():
@@ -20,8 +21,8 @@ def do_generate():
   print("================================================")
   #TODO make optional input param
   seed = "A" 
-  prediction_length = 100 
-  dataset_filename = "data/shakespear.txt"
+  prediction_length = 1000 
+  dataset_filename = "data/icelandic_sagas.txt"
   generate_sample(seed, prediction_length, dataset_filename)
   print("================================================")
 

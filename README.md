@@ -8,6 +8,7 @@ TODO
 - [x] Make work for batch size bigger than 1
 - [x] Saving of model
 - [x] Write code for generator
-- [ ] Test
+- [ ] Train starting from an existing model
 - [ ] Do TODOs scattered around the code
+- [ ] Make summary in README
 - [ ] Make this work for GPU when I get one
