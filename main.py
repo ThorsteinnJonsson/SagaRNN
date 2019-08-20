@@ -13,7 +13,9 @@ def do_train():
   #TODO make optional input param
   dataset_filename = "data/icelandic_sagas.txt"
   num_epochs = 250
-  train(dataset_filename, num_epochs)
+  trainer = Trainer()
+  # trainer = Trainer("saga_model.pt")
+  trainer.train(dataset_filename, num_epochs)
   print("================================================")
 
 def do_generate():
