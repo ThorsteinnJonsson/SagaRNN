@@ -28,13 +28,11 @@ class SagaRNN(nn.Module):
     self.num_layers = num_layers
 
     self.encoder = nn.Embedding(input_size, hidden_size)
-
     self.rnn = nn.LSTM(hidden_size, hidden_size, num_layers)
     self.decoder = nn.Linear(hidden_size, output_size)
 
   def forward(self, x, hidden):
     batch_size = x.size(0)
-
     encoded = self.encoder(x)
     out, hidden = self.rnn(encoded.view(1, batch_size, -1), hidden)
     out = self.decoder(out.view(batch_size, -1))

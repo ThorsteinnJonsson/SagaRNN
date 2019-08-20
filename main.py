@@ -36,9 +36,8 @@ def do_train(args):
 def do_generate(args):
   print("Generating...")
   print("================================================")
-  args.model_filename = 'saga_model.pt' # TODO remove
   generate_sample(args.seed, 
-                  args.model_filename, 
+                  args.pretrained_model, 
                   args.prediction_len, 
                   args.dataset_filename)
   print("================================================")

@@ -5,6 +5,7 @@ import os
 
 from model import *
 from helpers import *
+from generate import generate
   
   
 class Trainer():
@@ -13,7 +14,7 @@ class Trainer():
     if (len(model_load_path) > 0):
       self.model = load_model(model_load_path)
       self.is_model_loaded = True
-      print("Loaded pre-existing model from:\n {}".format(model_load_path))
+      print("Loaded pre-existing model from:\n{}".format(model_load_path))
     else:
       print("No pre-existing model specified, training will start from scratch.")
 
@@ -60,7 +61,15 @@ class Trainer():
 
       print("Epoch #{}: Training loss {}".format(epoch, loss/chunk_len))
 
-      # TODO validation loss
+      # Print out sample every now and then
+      if (epoch%10 == 0):
+        seed = "A"
+        prediction_length = 40
+        sample_text = generate(self.model, codec, seed, prediction_length)
+        print("################################################################")
+        print("Sample output:\n{}".format(sample_text))
+        print("################################################################")
+
 
       # Backwards pass and optimize
       optimizer.zero_grad()

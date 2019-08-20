@@ -45,7 +45,6 @@ class SagaDataLoader():
     self.batch_size = batch_size
     self.data_len = self.x.shape[1]
     assert(self.data_len == self.y.shape[1])
-    # TODO split in training and validation
 
   def get_random_batch(self):
     xb = torch.LongTensor(self.batch_size, self.chunk_len)
