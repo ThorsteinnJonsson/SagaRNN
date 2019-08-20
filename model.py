@@ -1,11 +1,8 @@
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
 
 import os
-
-# TODO Refactor when I get a GPU
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  
+import time
 
 def save_model(model):
   model_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model')

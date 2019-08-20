@@ -36,13 +36,11 @@ def generate(model, codec, seed, prediction_length, temperature=0.8):
   return ''.join(prediction)
 
 
-def generate_sample(seed, prediction_length, dataset_filename):
+def generate_sample(seed, model_filename, prediction_length, dataset_filename):
 
-  model_filename = 'saga_model.pt' # TODO make input parameter
   model = load_model(model_filename)
 
   # Get dictionary
-  # TODO save when training and only load dictionary instead of creating it again every time 
   text, chars = read_file(dataset_filename)
   codec = Codec(chars)
 

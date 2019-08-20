@@ -1,42 +1,55 @@
-import os
 import argparse
-import string
-
-import torch
 
 from train import *
 from generate import *
 
-def do_train():
+def get_args():
+  argparser = argparse.ArgumentParser()
+  argparser.add_argument('mode', type=str, help="Specify as \"train\" or \"generate\"")
+  argparser.add_argument('--pretrained_model', type=str, default="")
+  argparser.add_argument('--dataset_filename', type=str, default="data/icelandic_sagas.txt")
+  # Training-specific args
+  argparser.add_argument('--num_epochs', type=int, default=250)
+  argparser.add_argument('--batch_size', type=int, default=100)
+  argparser.add_argument('--chunk_len', type=int, default=200)
+  argparser.add_argument('--learning_rate', type=float, default=0.01)
+  
+  # Generate-specific args
+  argparser.add_argument('--prediction_len', type=int, default=1000)
+  argparser.add_argument('--seed', type=str, default="A")
+
+  return argparser.parse_args()
+
+
+def do_train(args):
   print("Training...")
   print("================================================")
-  #TODO make optional input param
-  dataset_filename = "data/icelandic_sagas.txt"
-  num_epochs = 250
   trainer = Trainer()
   # trainer = Trainer("saga_model.pt")
-  trainer.train(dataset_filename, num_epochs)
+  trainer.train(args.dataset_filename, 
+                args.num_epochs, 
+                args.batch_size, 
+                args.chunk_len,
+                args.learning_rate)
   print("================================================")
 
-def do_generate():
+def do_generate(args):
   print("Generating...")
   print("================================================")
-  #TODO make optional input param
-  seed = "A" 
-  prediction_length = 1000 
-  dataset_filename = "data/icelandic_sagas.txt"
-  generate_sample(seed, prediction_length, dataset_filename)
+  args.model_filename = 'saga_model.pt' # TODO remove
+  generate_sample(args.seed, 
+                  args.model_filename, 
+                  args.prediction_len, 
+                  args.dataset_filename)
   print("================================================")
 
 if __name__ == "__main__":
 
-  argparser = argparse.ArgumentParser()
-  argparser.add_argument('mode', type=str, help="Specify as \"train\" or \"generate\"")
-  args = argparser.parse_args()
+  args = get_args()
 
   if args.mode == "train":
-    do_train()
+    do_train(args)
   elif args.mode == "generate":
-    do_generate()
+    do_generate(args)
   else:
     print ("Mode \"" + args.mode + "\" not recognized. Please specify it as either \"train\" or \"generate\"")

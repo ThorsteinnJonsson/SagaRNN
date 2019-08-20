@@ -1,12 +1,7 @@
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
-import argparse
-import os
-import string
-import time
-from torch.utils.data import DataLoader
 
+import os
 
 from model import *
 from helpers import *
@@ -22,20 +17,19 @@ class Trainer():
     else:
       print("No pre-existing model specified, training will start from scratch.")
 
-  def train(self, dataset_filename, num_epochs):
-    # TODO make input param
-    chunk_len = 200
-    batch_size = 100
-    learning_rate = 0.01
+  def train(self, dataset_filename, 
+                  num_epochs, 
+                  batch_size,
+                  chunk_len,
+                  learning_rate):
     
     # Prepare data and make data loader
     text, chars = read_file(dataset_filename)
     codec = Codec(chars)
-    x_train, y_train = get_dataset(text, codec)
-    data_loader = SagaDataLoader(x_train, 
-                                y_train, 
-                                chunk_len, 
-                                batch_size)
+    data_loader = SagaDataLoader(text, 
+                                 codec, 
+                                 chunk_len, 
+                                 batch_size)
 
     # Set up model
     if not (self.is_model_loaded):
@@ -44,9 +38,9 @@ class Trainer():
       hidden_size = 100
       num_layers = 2
       self.model = SagaRNN(input_size,
-                          hidden_size,
-                          output_size,
-                          num_layers)
+                           hidden_size,
+                           output_size,
+                           num_layers)
     
     optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
@@ -64,7 +58,9 @@ class Trainer():
         output, hidden = self.model(xb[:,cid], hidden)
         loss += criterion(output, yb[:,cid])
 
-      print("Epoch #{}: Loss {}".format(epoch, loss/chunk_len))
+      print("Epoch #{}: Training loss {}".format(epoch, loss/chunk_len))
+
+      # TODO validation loss
 
       # Backwards pass and optimize
       optimizer.zero_grad()

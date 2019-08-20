@@ -1,11 +1,9 @@
-import string
-import numpy as np
-import random
-
 import torch 
 from torch.utils.data import TensorDataset
 from torch.utils.data import DataLoader
-from torch.autograd import Variable
+
+import numpy as np
+import random
 
 def read_file(filename):
     with open(filename, 'r') as fid:
@@ -29,8 +27,6 @@ class Codec():
   def decode(self, encoded_text):
     return ''.join([self.index_to_char[index] for index in encoded_text])
 
-
-
 def get_dataset(input_text, codec):
   # Encode chars as integers
   encoded_text = codec.encode(input_text)
@@ -43,13 +39,13 @@ def get_dataset(input_text, codec):
   return x_train, y_train
 
 class SagaDataLoader():
-  def __init__(self, x, y, chunk_len, batch_size):
-    self.x = x
-    self.y = y
+  def __init__(self, text, codec, chunk_len, batch_size):
+    self.x, self.y = get_dataset(text, codec)
     self.chunk_len = chunk_len
     self.batch_size = batch_size
-    self.data_len = x.shape[1]
-    assert(self.data_len == y.shape[1])
+    self.data_len = self.x.shape[1]
+    assert(self.data_len == self.y.shape[1])
+    # TODO split in training and validation
 
   def get_random_batch(self):
     xb = torch.LongTensor(self.batch_size, self.chunk_len)
